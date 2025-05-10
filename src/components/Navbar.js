@@ -8,7 +8,8 @@ import {
   Box,
   Menu,
   MenuItem,
-  Avatar
+  Avatar,
+  useTheme
 } from '@mui/material';
 import { Brightness4, Brightness7, AccountCircle } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +21,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+  const theme = useTheme();
 
   const handleLogout = () => {
     logout();
@@ -35,31 +37,31 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ background: theme.palette.primary.main, boxShadow: '0 0 16px 2px ' + theme.palette.accent.main }}>
       <Toolbar>
         <Typography
           variant="h6"
           component="div"
-          sx={{ flexGrow: 1, cursor: 'pointer' }}
+          sx={{ flexGrow: 1, cursor: 'pointer', color: theme.palette.accent.main, fontWeight: 700 }}
           onClick={() => navigate('/')}
         >
           Movie Explorer
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <IconButton
-            sx={{ ml: 1 }}
+            sx={{ ml: 1, color: theme.palette.accent.main }}
             onClick={toggleDarkMode}
             color="inherit"
           >
             {darkMode ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
           {user && (
-            <Button color="inherit" onClick={() => navigate('/favorites')}>Go to Favorites</Button>
+            <Button sx={{ color: theme.palette.secondary.main, fontWeight: 700 }} onClick={() => navigate('/favorites')}>Go to Favorites</Button>
           )}
           {user ? (
             <>
-              <IconButton color="inherit" onClick={handleProfileMenuOpen}>
-                <Avatar sx={{ width: 32, height: 32 }}>
+              <IconButton color="inherit" onClick={handleProfileMenuOpen} sx={{ color: theme.palette.accent.main }}>
+                <Avatar sx={{ width: 32, height: 32, bgcolor: theme.palette.secondary.main }}>
                   <AccountCircle />
                 </Avatar>
               </IconButton>
@@ -75,7 +77,7 @@ const Navbar = () => {
               </Menu>
             </>
           ) : (
-            <Button color="inherit" onClick={() => navigate('/login')}>
+            <Button sx={{ color: theme.palette.secondary.main, fontWeight: 700 }} onClick={() => navigate('/login')}>
               Login
             </Button>
           )}

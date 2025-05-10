@@ -4,33 +4,49 @@ export const getTheme = (mode) =>
   createTheme({
     palette: {
       mode,
-      primary: {
-        main: "#0f0c29", // Dark Indigo
-      },
-      secondary: {
-        main: "#ff0080", // Neon Pink
-      },
-      background: {
-        default: "#1a1a2e", // Deep background
-        paper: mode === "dark" ? "#22223b" : "#fff",
-      },
-      accent: {
-        main: "#00ffff", // Cyan
-      },
-      highlight: {
-        main: "#f0e130", // Gold
-      },
-      text: {
-        primary: mode === "dark" ? "#fff" : "#0f0c29",
-        secondary: mode === "dark" ? "#00ffff" : "#ff0080",
-      },
+      ...(mode === 'dark'
+        ? {
+            primary: { main: '#1f1f1f' }, // Charcoal Black
+            secondary: { main: '#e50914' }, // Netflix Red
+            background: {
+              default: '#121212',
+              paper: '#1f1f1f',
+            },
+            accent: { main: '#ffffff' }, // White for text
+            highlight: { main: '#f5c518' }, // IMDb Yellow
+            text: {
+              primary: '#ffffff',
+              secondary: '#d3d3d3',
+            },
+            hover: { main: '#292929' },
+          }
+        : {
+            primary: { main: '#ffffff' }, // White
+            secondary: { main: '#e50914' }, // Netflix Red
+            background: {
+              default: '#f5f5f5',
+              paper: '#ffffff',
+            },
+            accent: { main: '#1f1f1f' }, // Charcoal Black for text
+            highlight: { main: '#f5c518' }, // IMDb Yellow
+            text: {
+              primary: '#1f1f1f',
+              secondary: '#292929',
+            },
+            hover: { main: '#e3e3e3' },
+          }),
     },
     components: {
       MuiAppBar: {
         styleOverrides: {
           root: {
-            background: "linear-gradient(90deg, #0f0c29 0%, #302b63 50%, #ff0080 100%)",
-            boxShadow: "0 0 16px 2px #00ffff99",
+            background: mode === 'dark'
+              ? '#1f1f1f'
+              : '#ffffff',
+            color: mode === 'dark' ? '#ffffff' : '#1f1f1f',
+            boxShadow: mode === 'dark'
+              ? '0 0 16px 2px #000a'
+              : '0 0 8px 1px #e3e3e3',
           },
         },
       },
@@ -39,14 +55,18 @@ export const getTheme = (mode) =>
           root: {
             borderRadius: 20,
             fontWeight: 700,
-            textTransform: "uppercase",
-            background: "linear-gradient(90deg, #ff0080 0%, #00ffff 100%)",
-            color: "#0f0c29",
-            boxShadow: "0 0 8px 2px #00ffff55",
+            textTransform: 'uppercase',
+            background: mode === 'dark'
+              ? 'linear-gradient(90deg, #e50914 0%, #f5c518 100%)'
+              : 'linear-gradient(90deg, #e50914 0%, #f5c518 100%)',
+            color: mode === 'dark' ? '#fff' : '#1f1f1f',
+            boxShadow: mode === 'dark'
+              ? '0 0 8px 2px #000a'
+              : '0 0 8px 2px #e3e3e3',
             '&:hover': {
-              background: "#282c34",
-              color: "#f0e130",
-              boxShadow: "0 0 16px 2px #f0e13099",
+              background: mode === 'dark' ? '#292929' : '#e3e3e3',
+              color: '#e50914',
+              boxShadow: '0 0 16px 2px #f5c51899',
             },
           },
         },
@@ -54,15 +74,17 @@ export const getTheme = (mode) =>
       MuiCard: {
         styleOverrides: {
           root: {
-            background: "#1a1a2e",
-            border: "1.5px solid #00ffff",
-            boxShadow: "0 0 16px 2px #ff008055",
-            color: "#fff",
-            transition: "transform 0.2s, box-shadow 0.2s",
+            background: mode === 'dark' ? '#1f1f1f' : '#fff',
+            border: `1.5px solid ${mode === 'dark' ? '#292929' : '#e3e3e3'}`,
+            boxShadow: mode === 'dark'
+              ? '0 0 16px 2px #000a'
+              : '0 0 8px 1px #e3e3e3',
+            color: mode === 'dark' ? '#fff' : '#1f1f1f',
+            transition: 'transform 0.2s, box-shadow 0.2s',
             '&:hover': {
-              boxShadow: "0 0 32px 4px #00ffff99",
-              borderColor: "#f0e130",
-              transform: "scale(1.05)",
+              boxShadow: '0 0 32px 4px #f5c51899',
+              borderColor: '#e50914',
+              transform: 'scale(1.05)',
             },
           },
         },
@@ -70,17 +92,17 @@ export const getTheme = (mode) =>
       MuiTypography: {
         styleOverrides: {
           root: {
-            fontFamily: 'Orbitron, "Roboto Mono", monospace',
+            fontFamily: 'Roboto, "Roboto Mono", Arial, sans-serif',
           },
         },
       },
       MuiIconButton: {
         styleOverrides: {
           root: {
-            color: "#00ffff",
+            color: mode === 'dark' ? '#f5c518' : '#e50914',
             '&:hover': {
-              color: "#f0e130",
-              background: "#282c34",
+              color: '#e50914',
+              background: mode === 'dark' ? '#292929' : '#e3e3e3',
             },
           },
         },
@@ -88,30 +110,30 @@ export const getTheme = (mode) =>
       MuiPaper: {
         styleOverrides: {
           root: {
-            background: "#22223b",
-            color: "#fff",
+            background: mode === 'dark' ? '#1f1f1f' : '#fff',
+            color: mode === 'dark' ? '#fff' : '#1f1f1f',
           },
         },
       },
       MuiInputBase: {
         styleOverrides: {
           root: {
-            color: "#00ffff",
-            background: "#282c34",
+            color: mode === 'dark' ? '#fff' : '#1f1f1f',
+            background: mode === 'dark' ? '#292929' : '#e3e3e3',
             borderRadius: 8,
           },
         },
       },
     },
     typography: {
-      fontFamily: 'Orbitron, "Roboto Mono", monospace',
+      fontFamily: 'Roboto, "Roboto Mono", Arial, sans-serif',
       h4: {
-        color: "#ff0080",
-        textShadow: "0 0 8px #00ffff, 0 0 2px #f0e130",
+        color: mode === 'dark' ? '#f5c518' : '#e50914',
+        fontWeight: 700,
       },
       h5: {
-        color: "#00ffff",
-        textShadow: "0 0 8px #ff0080, 0 0 2px #f0e130",
+        color: mode === 'dark' ? '#e50914' : '#f5c518',
+        fontWeight: 700,
       },
     },
   });

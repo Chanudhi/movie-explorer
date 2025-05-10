@@ -11,12 +11,12 @@ import {
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useFavorites } from "../context/FavoritesContext";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "@mui/material";
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
-  const { theme } = useTheme();
+  const theme = useTheme();
   const imageUrl = `${process.env.REACT_APP_TMDB_IMAGE_BASE_URL}/w500${movie.poster_path}`;
 
   const handleFavorite = (e) => {
@@ -40,9 +40,11 @@ const MovieCard = ({ movie }) => {
         "&:hover": {
           transform: "scale(1.05)",
         },
-        backgroundColor: theme === "dark" ? "#333" : "#fff",
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
         position: "relative",
-        color: theme === "dark" ? "#fff" : "#000",
+        border: `1.5px solid ${theme.palette.accent.main}`,
+        boxShadow: "0 0 16px 2px " + theme.palette.secondary.main + "55",
       }}
       onClick={() => navigate(`/movie/${movie.id}`)}
     >
@@ -56,8 +58,8 @@ const MovieCard = ({ movie }) => {
       <CardContent
         sx={{
           flexGrow: 1,
-          backgroundColor: theme === "dark" ? "#222" : "#fff",
-          color: theme === "dark" ? "#fff" : "#000",
+          backgroundColor: theme.palette.background.paper,
+          color: theme.palette.text.primary,
           borderBottomLeftRadius: 4,
           borderBottomRightRadius: 4,
         }}
@@ -67,13 +69,13 @@ const MovieCard = ({ movie }) => {
           variant="h6"
           component="div"
           noWrap
-          sx={{ color: theme === "dark" ? "#fff" : "#000" }}
+          sx={{ color: theme.palette.text.primary }}
         >
           {movie.title}
         </Typography>
         <Typography
           variant="body2"
-          sx={{ color: theme === "dark" ? "#ccc" : "text.secondary" }}
+          sx={{ color: theme.palette.text.secondary }}
         >
           {new Date(movie.release_date).getFullYear()}
         </Typography>
@@ -83,11 +85,11 @@ const MovieCard = ({ movie }) => {
             precision={0.5}
             readOnly
             size="small"
-            sx={{ color: theme === "dark" ? "#ffd700" : undefined }}
+            sx={{ color: theme.palette.highlight.main }}
           />
           <Typography
             variant="body2"
-            sx={{ ml: 1, color: theme === "dark" ? "#ffd700" : "text.secondary" }}
+            sx={{ ml: 1, color: theme.palette.highlight.main }}
           >
             ({movie.vote_average.toFixed(1)})
           </Typography>
@@ -95,8 +97,13 @@ const MovieCard = ({ movie }) => {
       </CardContent>
       <IconButton
         onClick={handleFavorite}
-        sx={{ position: "absolute", top: 10, right: 10 }}
-        color={isFavorite(movie.id) ? "error" : "inherit"}
+        sx={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          color: theme.palette.accent.main,
+          "&:hover": { color: theme.palette.highlight.main },
+        }}
       >
         {isFavorite(movie.id) ? <Favorite /> : <FavoriteBorder />}
       </IconButton>
