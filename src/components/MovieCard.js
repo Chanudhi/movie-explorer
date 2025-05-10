@@ -1,3 +1,4 @@
+// MovieCard.js - Displays a single movie card with poster, rating, title, year, favorite, and watchlist actions
 import React from "react";
 import {
   Card,
@@ -14,13 +15,19 @@ import { useFavorites } from "../context/FavoritesContext";
 import { useWatchlist } from "../context/WatchlistContext";
 import { useTheme } from "@mui/material";
 
+// MovieCard component receives a movie object as prop
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
+  // Favorite context
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+  // Watchlist context
   const { isInWatchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
+  // Theme for styling
   const theme = useTheme();
+  // Poster image URL
   const imageUrl = `${process.env.REACT_APP_TMDB_IMAGE_BASE_URL}/w500${movie.poster_path}`;
 
+  // Toggle favorite status
   const handleFavorite = (e) => {
     e.stopPropagation();
     if (isFavorite(movie.id)) {
@@ -30,6 +37,7 @@ const MovieCard = ({ movie }) => {
     }
   };
 
+  // Toggle watchlist status
   const handleWatchlist = (e) => {
     e.stopPropagation();
     if (isInWatchlist(movie.id)) {
@@ -41,6 +49,7 @@ const MovieCard = ({ movie }) => {
 
   return (
     <Card
+      // Card styling for modern, cinematic look
       sx={{
         maxWidth: 220,
         minWidth: 180,
@@ -60,6 +69,7 @@ const MovieCard = ({ movie }) => {
         },
       }}
     >
+      {/* Poster and favorite icon */}
       <Box sx={{ position: "relative", cursor: "pointer" }} onClick={() => navigate(`/movie/${movie.id}`)}>
         <CardMedia
           component="img"
@@ -68,6 +78,7 @@ const MovieCard = ({ movie }) => {
           alt={movie.title}
           sx={{ objectFit: "cover", borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
         />
+        {/* Favorite (heart) icon */}
         <IconButton
           onClick={handleFavorite}
           sx={{ position: "absolute", top: 8, right: 8, color: theme.palette.accent.main, background: 'rgba(0,0,0,0.5)' }}
@@ -75,6 +86,7 @@ const MovieCard = ({ movie }) => {
           {isFavorite(movie.id) ? <Favorite /> : <FavoriteBorder />}
         </IconButton>
       </Box>
+      {/* Card content: rating, title, year, watchlist button */}
       <CardContent
         sx={{
           flexGrow: 1,
@@ -86,18 +98,22 @@ const MovieCard = ({ movie }) => {
           p: 2,
         }}
       >
+        {/*  rating */}
         <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
           <Star sx={{ color: theme.palette.highlight.main, fontSize: 20, mr: 0.5 }} />
           <Typography variant="body2" sx={{ color: theme.palette.highlight.main, fontWeight: 700 }}>
             {movie.vote_average?.toFixed(1) || "-"}
           </Typography>
         </Box>
+        {/* Movie title */}
         <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 0.5 }} noWrap>
           {movie.title}
         </Typography>
+        {/* Movie year */}
         <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 1 }}>
           {new Date(movie.release_date).getFullYear()}
         </Typography>
+        {/* Watchlist button */}
         <Button
           variant={isInWatchlist(movie.id) ? "contained" : "outlined"}
           size="small"
@@ -119,11 +135,7 @@ const MovieCard = ({ movie }) => {
         >
           {isInWatchlist(movie.id) ? "In Watchlist" : "Watchlist"}
         </Button>
-        {/* Optional: Trailer button if you have trailer links */}
-        {/* <Button variant="text" size="small" startIcon={<PlayArrow />} sx={{ color: theme.palette.secondary.main, fontWeight: 700 }}>
-          Trailer
-        </Button> */}
-      </CardContent>
+       </CardContent>
     </Card>
   );
 };

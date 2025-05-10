@@ -1,3 +1,4 @@
+// Navbar.js - Top navigation bar for the Movie Explorer app
 import React, { useState } from 'react';
 import {
   AppBar,
@@ -16,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme as useCustomTheme } from '../context/ThemeContext';
 
+// Navbar component displays app title, theme toggle, favorites, watchlist, and user menu
 const Navbar = () => {
   const { darkMode, toggleDarkMode } = useCustomTheme();
   const { user, logout } = useAuth();
@@ -23,15 +25,18 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
 
+  // Handle user logout
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  // Open user profile menu
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Close user profile menu
   const handleProfileMenuClose = () => {
     setAnchorEl(null);
   };
@@ -39,6 +44,7 @@ const Navbar = () => {
   return (
     <AppBar position="static" sx={{ background: theme.palette.primary.main, boxShadow: '0 0 16px 2px ' + theme.palette.accent.main }}>
       <Toolbar>
+        {/* App title, navigates to home */}
         <Typography
           variant="h6"
           component="div"
@@ -48,6 +54,7 @@ const Navbar = () => {
           Movie Explorer
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {/* Theme toggle button */}
           <IconButton
             sx={{ ml: 1, color: theme.palette.accent.main }}
             onClick={toggleDarkMode}
@@ -55,12 +62,14 @@ const Navbar = () => {
           >
             {darkMode ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
+          {/* Favorites and Watchlist buttons (only when logged in) */}
           {user && (
             <>
               <Button sx={{ color: theme.palette.highlight.main, fontWeight: 700 }} onClick={() => navigate('/favorites')}>Go to Favorites</Button>
               <Button sx={{ color: theme.palette.highlight.main, fontWeight: 700 }} onClick={() => navigate('/watchlist')}>Watchlist</Button>
             </>
           )}
+          {/* User profile menu or login button */}
           {user ? (
             <>
               <IconButton color="inherit" onClick={handleProfileMenuOpen} sx={{ color: theme.palette.accent.main }}>

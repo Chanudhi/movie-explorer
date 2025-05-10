@@ -1,3 +1,4 @@
+// Home.js - Main landing page showing trending movies and search functionality
 import React, { useState } from 'react';
 import { Container, Grid, Typography, Box, CircularProgress } from '@mui/material';
 import { useInfiniteQuery } from 'react-query';
@@ -6,10 +7,14 @@ import MovieCard from '../components/MovieCard';
 import SearchBar from '../components/SearchBar';
 import { useInView } from 'react-intersection-observer';
 
+// Home component displays trending movies and search results
 const Home = () => {
+  // Search query state
   const [searchQuery, setSearchQuery] = useState('');
+  // Infinite scroll hook
   const { ref, inView } = useInView();
 
+  // Fetch movies (trending or search) with infinite scroll
   const {
     data,
     fetchNextPage,
@@ -29,12 +34,14 @@ const Home = () => {
     }
   );
 
+  // Fetch next page when inView (infinite scroll)
   React.useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  // Handle search bar input
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
@@ -64,10 +71,12 @@ const Home = () => {
 
   return (
     <Container maxWidth="lg">
+      {/* Search bar for movies */}
       <SearchBar onSearch={handleSearch} />
       <Typography variant="h4" component="h1" gutterBottom>
         {searchQuery ? 'Search Results' : 'Trending Movies'}
       </Typography>
+      {/* Movie grid */}
       <Grid container spacing={3}>
         {data?.pages.map((page) =>
           page.results.map((movie) => (
@@ -77,6 +86,7 @@ const Home = () => {
           ))
         )}
       </Grid>
+      {/* Infinite scroll loader */}
       <Box
         ref={ref}
         sx={{

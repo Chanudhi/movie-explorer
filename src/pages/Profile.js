@@ -1,3 +1,4 @@
+// Profile.js - User profile page with tabbed view for Favorites and Watchlist
 import React, { useState } from 'react';
 import {
   Box,
@@ -15,13 +16,16 @@ import { useWatchlist } from '../context/WatchlistContext';
 import MovieCard from '../components/MovieCard';
 import { useTheme } from '@mui/material';
 
+// Profile component displays user info and lets user toggle between Favorites and Watchlist
 const Profile = ({ showWatchlist }) => {
   const { user } = useAuth();
   const { favorites } = useFavorites();
   const { watchlist } = useWatchlist();
   const theme = useTheme();
+  // Tab state: 'favorites' or 'watchlist'
   const [tab, setTab] = useState(showWatchlist ? 'watchlist' : 'favorites');
 
+  // Determine which movies to show and section title
   const moviesToShow = tab === 'watchlist' ? watchlist : favorites;
   const sectionTitle = tab === 'watchlist' ? '🎬 Your Watchlist' : '⭐ Your Favorite Movies';
   const emptyText = tab === 'watchlist'
@@ -46,7 +50,7 @@ const Profile = ({ showWatchlist }) => {
           borderRadius: 3,
         }}
       >
-        {/* User Info */}
+        {/* User Info Section */}
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
           <Avatar
             sx={{
@@ -69,7 +73,7 @@ const Profile = ({ showWatchlist }) => {
 
         <Divider sx={{ my: 3 }} />
 
-        {/* Tab Toggle */}
+        {/* Tab Toggle for Favorites/Watchlist */}
         <ButtonGroup sx={{ mb: 3 }}>
           <Button
             variant={tab === 'favorites' ? 'contained' : 'outlined'}
@@ -87,7 +91,7 @@ const Profile = ({ showWatchlist }) => {
           </Button>
         </ButtonGroup>
 
-        {/* Favorites or Watchlist Section */}
+        {/* Section for Favorites or Watchlist */}
         <Typography variant="h6" gutterBottom>
           {sectionTitle}
         </Typography>

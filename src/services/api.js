@@ -1,5 +1,7 @@
+// api.js - Service for interacting with the TMDb API
 import axios from 'axios';
 
+// Create an axios instance with base URL and API key
 const api = axios.create({
   baseURL: process.env.REACT_APP_TMDB_BASE_URL,
   params: {
@@ -7,6 +9,7 @@ const api = axios.create({
   },
 });
 
+// Fetch trending movies (weekly)
 export const getTrendingMovies = async (page = 1) => {
   try {
     const response = await api.get('/trending/movie/week', { params: { page } });
@@ -16,6 +19,7 @@ export const getTrendingMovies = async (page = 1) => {
   }
 };
 
+// Search for movies by query
 export const searchMovies = async (query, page = 1) => {
   try {
     const response = await api.get('/search/movie', {
@@ -27,6 +31,7 @@ export const searchMovies = async (query, page = 1) => {
   }
 };
 
+// Fetch detailed info for a single movie (including credits and videos)
 export const getMovieDetails = async (movieId) => {
   try {
     const [movieResponse, creditsResponse, videosResponse] = await Promise.all([

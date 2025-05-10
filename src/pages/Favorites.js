@@ -1,10 +1,13 @@
+// Favorites.js - Page to display user's favorite movies
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import MovieCard from "../components/MovieCard";
 
+// Favorites page loads favorite movies from localStorage and displays them
 const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
 
+  // Load favorites from localStorage on mount
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(saved);
