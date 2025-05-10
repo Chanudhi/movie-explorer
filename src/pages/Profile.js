@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -6,16 +6,27 @@ import {
   Divider,
   Grid,
   Paper,
+  Button,
+  ButtonGroup,
 } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import { useFavorites } from '../context/FavoritesContext';
+import { useWatchlist } from '../context/WatchlistContext';
 import MovieCard from '../components/MovieCard';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '@mui/material';
 
-const Profile = () => {
+const Profile = ({ showWatchlist }) => {
   const { user } = useAuth();
   const { favorites } = useFavorites();
-  const { theme } = useTheme();
+  const { watchlist } = useWatchlist();
+  const theme = useTheme();
+  const [tab, setTab] = useState(showWatchlist ? 'watchlist' : 'favorites');
+
+  const moviesToShow = tab === 'watchlist' ? watchlist : favorites;
+  const sectionTitle = tab === 'watchlist' ? '🎬 Your Watchlist' : '⭐ Your Favorite Movies';
+  const emptyText = tab === 'watchlist'
+    ? "You haven't added any movies to your watchlist yet."
+    : "You haven't added any favorites yet.";
 
   return (
     <Box
@@ -24,14 +35,14 @@ const Profile = () => {
         maxWidth: 1000,
         mx: 'auto',
         minHeight: '80vh',
-        color: theme === 'dark' ? '#fff' : '#000',
+        color: theme.palette.text.primary,
       }}
     >
       <Paper
         elevation={3}
         sx={{
           p: { xs: 2, sm: 4 },
-          backgroundColor: theme === 'dark' ? '#1e1e1e' : '#f9f9f9',
+          backgroundColor: theme.palette.background.paper,
           borderRadius: 3,
         }}
       >
@@ -42,7 +53,7 @@ const Profile = () => {
               width: 64,
               height: 64,
               fontSize: 28,
-              bgcolor: theme === 'dark' ? '#555' : 'primary.main',
+              bgcolor: theme.palette.secondary.main,
               mr: 2,
             }}
           >
@@ -50,7 +61,7 @@ const Profile = () => {
           </Avatar>
           <Box>
             <Typography variant="h5">{user?.username || 'User'}</Typography>
-            <Typography variant="body2" sx={{ color: theme === 'dark' ? '#aaa' : 'text.secondary' }}>
+            <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
               {user?.email || 'user@email.com'}
             </Typography>
           </Box>
@@ -58,13 +69,31 @@ const Profile = () => {
 
         <Divider sx={{ my: 3 }} />
 
-        {/* Favorites Section */}
+        {/* Tab Toggle */}
+        <ButtonGroup sx={{ mb: 3 }}>
+          <Button
+            variant={tab === 'favorites' ? 'contained' : 'outlined'}
+            onClick={() => setTab('favorites')}
+            sx={{ fontWeight: 700 }}
+          >
+            Favorites
+          </Button>
+          <Button
+            variant={tab === 'watchlist' ? 'contained' : 'outlined'}
+            onClick={() => setTab('watchlist')}
+            sx={{ fontWeight: 700 }}
+          >
+            Watchlist
+          </Button>
+        </ButtonGroup>
+
+        {/* Favorites or Watchlist Section */}
         <Typography variant="h6" gutterBottom>
-          ⭐ Your Favorite Movies
+          {sectionTitle}
         </Typography>
-        {favorites.length > 0 ? (
+        {moviesToShow.length > 0 ? (
           <Grid container spacing={2}>
-            {favorites.map((movie) => (
+            {moviesToShow.map((movie) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
                 <MovieCard movie={movie} />
               </Grid>
@@ -76,10 +105,10 @@ const Profile = () => {
             sx={{
               mt: 2,
               fontStyle: 'italic',
-              color: theme === 'dark' ? '#888' : 'text.secondary',
+              color: theme.palette.text.secondary,
             }}
           >
-            You haven’t added any favorites yet.
+            {emptyText}
           </Typography>
         )}
       </Paper>

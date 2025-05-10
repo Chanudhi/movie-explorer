@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { FavoritesProvider } from './context/FavoritesContext';
+import { WatchlistProvider } from './context/WatchlistContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import MovieDetails from './components/MovieDetails';
@@ -35,49 +36,59 @@ const App = () => {
       <AuthProvider>
         <ThemeProvider>
           <FavoritesProvider>
-            <CssBaseline />
-            <Router>
-              <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                <Navbar />
-                <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
-                  <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route
-                      path="/"
-                      element={
-                        <ProtectedRoute>
-                          <Home />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/movie/:movieId"
-                      element={
-                        <ProtectedRoute>
-                          <MovieDetails />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/favorites"
-                      element={
-                        <ProtectedRoute>
-                          <Favorites />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/profile"
-                      element={
-                        <ProtectedRoute>
-                          <Profile />
-                        </ProtectedRoute>
-                      }
-                    />
-                  </Routes>
+            <WatchlistProvider>
+              <CssBaseline />
+              <Router>
+                <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                  <Navbar />
+                  <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
+                    <Routes>
+                      <Route path="/login" element={<Login />} />
+                      <Route
+                        path="/"
+                        element={
+                          <ProtectedRoute>
+                            <Home />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="/movie/:movieId"
+                        element={
+                          <ProtectedRoute>
+                            <MovieDetails />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="/favorites"
+                        element={
+                          <ProtectedRoute>
+                            <Favorites />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="/profile"
+                        element={
+                          <ProtectedRoute>
+                            <Profile />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="/watchlist"
+                        element={
+                          <ProtectedRoute>
+                            <Profile showWatchlist />
+                          </ProtectedRoute>
+                        }
+                      />
+                    </Routes>
+                  </Box>
                 </Box>
-              </Box>
-            </Router>
+              </Router>
+            </WatchlistProvider>
           </FavoritesProvider>
         </ThemeProvider>
       </AuthProvider>
