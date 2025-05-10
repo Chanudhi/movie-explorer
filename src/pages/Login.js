@@ -9,7 +9,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
-  // Handle login (mock, stores user in localStorage)
+  // Handle login (mock, stores user in localStorage.)
   const handleLogin = () => {
     localStorage.setItem("user", username);
     navigate("/");
