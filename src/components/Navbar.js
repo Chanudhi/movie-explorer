@@ -56,7 +56,7 @@ const Navbar = () => {
             {darkMode ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
           {user && (
-            <Button sx={{ color: theme.palette.secondary.main, fontWeight: 700 }} onClick={() => navigate('/favorites')}>Go to Favorites</Button>
+            <Button sx={{ color: theme.palette.highlight.main, fontWeight: 700 }} onClick={() => navigate('/favorites')}>Go to Favorites</Button>
           )}
           {user ? (
             <>
