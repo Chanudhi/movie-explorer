@@ -19,7 +19,7 @@ const Favorites = () => {
         ⭐ Your Favorite Movies
       </Typography>
       {favorites.length > 0 ? (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justifyContent="center" alignItems="flex-start">
           {favorites.map((movie) => (
             <Grid item xs={6} sm={4} md={3} key={movie.id}>
               <MovieCard movie={movie} />

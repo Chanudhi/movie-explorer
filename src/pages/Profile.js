@@ -96,7 +96,7 @@ const Profile = ({ showWatchlist }) => {
           {sectionTitle}
         </Typography>
         {moviesToShow.length > 0 ? (
-          <Grid container spacing={2}>
+          <Grid container spacing={2} justifyContent="center" alignItems="flex-start">
             {moviesToShow.map((movie) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
                 <MovieCard movie={movie} />

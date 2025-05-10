@@ -51,9 +51,19 @@ const Navbar = () => {
           sx={{ flexGrow: 1, cursor: 'pointer', color: theme.palette.accent.main, fontWeight: 700 }}
           onClick={() => navigate('/')}
         >
-          Movie Explorer
+          🎬 Movie Explorer
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.5,
+            flexWrap: { xs: 'wrap', sm: 'nowrap' },
+            justifyContent: { xs: 'center', sm: 'flex-end' },
+            width: { xs: '100%', sm: 'auto' },
+            mt: { xs: 1, sm: 0 },
+          }}
+        >
           {/* Theme toggle button */}
           <IconButton
             sx={{ ml: 1, color: theme.palette.accent.main }}

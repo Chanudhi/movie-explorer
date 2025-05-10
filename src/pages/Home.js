@@ -14,7 +14,7 @@ const Home = () => {
   // Infinite scroll hook
   const { ref, inView } = useInView();
 
-  // Fetch movies (trending or search) with infinite scroll
+  // Fetch movies  with infinite scroll
   const {
     data,
     fetchNextPage,
@@ -73,11 +73,11 @@ const Home = () => {
     <Container maxWidth="lg">
       {/* Search bar for movies */}
       <SearchBar onSearch={handleSearch} />
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' }, fontWeight: 700 }}>
         {searchQuery ? 'Search Results' : 'Trending Movies'}
       </Typography>
       {/* Movie grid */}
-      <Grid container spacing={3}>
+      <Grid container spacing={3} justifyContent="center" alignItems="flex-start">
         {data?.pages.map((page) =>
           page.results.map((movie) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={movie.id}>
