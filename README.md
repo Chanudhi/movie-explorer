@@ -2,6 +2,9 @@
 
 A modern, cinematic web app for discovering trending movies, searching, and managing your favorites and watchlist. Inspired by Netflix and IMDb, with a beautiful dark/light theme and a focus on user experience.
 
+## 🚀 Live Demo
+[https://movie-explorer-green.vercel.app/login](https://movie-explorer-green.vercel.app/login)
+
 ## Features
 - 🔥 Trending movies (from TMDb API)
 - 🔍 Search for movies
