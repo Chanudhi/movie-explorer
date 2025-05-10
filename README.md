@@ -22,7 +22,7 @@ A modern, cinematic web app for discovering trending movies, searching, and mana
 
 ### 1. Clone the repository
 ```bash
-git clone <your-repo-url>
+git clone (https://github.com/Chanudhi/movie-explorer)
 cd movie-explorer
 ```
 
