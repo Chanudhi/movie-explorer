@@ -3,7 +3,7 @@ import { Container, Grid, Typography, Box, CircularProgress } from '@mui/materia
 import { useInfiniteQuery } from 'react-query';
 import { getTrendingMovies, searchMovies } from '../services/api';
 import MovieCard from '../components/MovieCard';
-import SearchBar from '../components/searchBar';
+import SearchBar from '../components/SearchBar';
 import { useInView } from 'react-intersection-observer';
 
 const Home = () => {

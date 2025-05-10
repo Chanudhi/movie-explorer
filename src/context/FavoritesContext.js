@@ -1,34 +1,47 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
-const FavoritesContext = createContext();
-
-export const useFavorites = () => useContext(FavoritesContext);
+const FavoritesContext = createContext(null);
 
 export const FavoritesProvider = ({ children }) => {
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(() => {
+    const savedFavorites = localStorage.getItem('favorites');
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  });
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(saved);
-  }, []);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  const isFavorite = (movieId) => {
+    return favorites.some(movie => movie.id === movieId);
+  };
 
   const addFavorite = (movie) => {
-    const updated = [...favorites, movie];
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
+    setFavorites(prev => [...prev, movie]);
   };
 
   const removeFavorite = (movieId) => {
-    const updated = favorites.filter((m) => m.id !== movieId);
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
+    setFavorites(prev => prev.filter(movie => movie.id !== movieId));
   };
 
-  const isFavorite = (id) => favorites.some((m) => m.id === id);
+  const value = {
+    favorites,
+    isFavorite,
+    addFavorite,
+    removeFavorite,
+  };
 
   return (
-    <FavoritesContext.Provider value={{ favorites, addFavorite, removeFavorite, isFavorite }}>
+    <FavoritesContext.Provider value={value}>
       {children}
     </FavoritesContext.Provider>
   );
+};
+
+export const useFavorites = () => {
+  const context = useContext(FavoritesContext);
+  if (!context) {
+    throw new Error('useFavorites must be used within a FavoritesProvider');
+  }
+  return context;
 };

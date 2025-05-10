@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -6,8 +6,11 @@ import {
   IconButton,
   Button,
   Box,
+  Menu,
+  MenuItem,
+  Avatar
 } from '@mui/material';
-import { Brightness4, Brightness7 } from '@mui/icons-material';
+import { Brightness4, Brightness7, AccountCircle } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme as useCustomTheme } from '../context/ThemeContext';
@@ -16,10 +19,19 @@ const Navbar = () => {
   const { darkMode, toggleDarkMode } = useCustomTheme();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -41,10 +53,27 @@ const Navbar = () => {
           >
             {darkMode ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
+          {user && (
+            <Button color="inherit" onClick={() => navigate('/favorites')}>Go to Favorites</Button>
+          )}
           {user ? (
-            <Button color="inherit" onClick={handleLogout}>
-              Logout
-            </Button>
+            <>
+              <IconButton color="inherit" onClick={handleProfileMenuOpen}>
+                <Avatar sx={{ width: 32, height: 32 }}>
+                  <AccountCircle />
+                </Avatar>
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleProfileMenuClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <MenuItem onClick={() => { handleProfileMenuClose(); navigate('/profile'); }}>Profile</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </>
           ) : (
             <Button color="inherit" onClick={() => navigate('/login')}>
               Login
